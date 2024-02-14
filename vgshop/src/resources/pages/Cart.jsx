@@ -38,7 +38,7 @@ const Cart = () => {
                                                 {item.name}                                        
                                             </div>
                                             <div className="cart-element-publisher-link">
-                                                <Link to={`/publisher/${item.publisher_id}`} style={{ textDecoration: 'none',color: '#FFA458' }}>{item.publisher.name}</Link>
+                                                <Link to={`/publisher/${item.publisher_id}`} style={{ textDecoration: 'none',color: '#FFA458' }}>123</Link>
                                             </div>                                    
                                             <FontAwesomeIcon icon={icon({name: "trash"})} className="cart-element-delete"/>
                                         </div>                               

@@ -2,10 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import React from "react";
 import {
   createBrowserRouter,
+  Navigate,
   RouterProvider,
 } from "react-router-dom";
 import "./style/index.css"
 import Navbar from "./resources/components/Navbar.jsx"
+import Navbar_admin from "./resources/components/Navbar_admin.jsx";
 import Footer from "./resources/components/Footer.jsx"
 import Register from "./resources/pages/Register.jsx"
 import Login from "./resources/pages/Login.jsx"
@@ -21,8 +23,26 @@ const router = createBrowserRouter([
     path: "/",
     element: (
     <div>
+      <Navigate to="/login" />
+    </div>
+    ),
+  },
+  {
+    path: "/home",
+    element: (
+    <div>
       <Navbar />
       <Home_client />
+      <Footer />
+    </div>
+    ),
+  },
+  {
+    path: "/admin",
+    element: (
+    <div>
+      <Navbar_admin />
+      <Home_admin />
       <Footer />
     </div>
     ),

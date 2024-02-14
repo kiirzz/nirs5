@@ -1,41 +1,73 @@
-import {db} from "../db.js"
-import bcrypt from "bcryptjs"
+import { sequelize, User } from "../db.js"
+import jwt from "jsonwebtoken";
 
-export const register = (req,res)=>{
+export const register = async (req,res) => {
+
+    function unID() {
+        return Math.floor(Math.random() * Date.now()).toString(16).slice(-10)
+    }
 
     //CHECK EXISTING USER
-    const q = "SELECT * FROM users WHERE email = ? OR username = ?"
+    const data = await User.findOne({ where: {
+        username: req.body.username
+    }});
 
-    db.query(q,[req.body.email, req.body.username], (err,data)=>{
-        if(err) return res.json(err)
-        if(data.length) return res.status(409).json("User already existed")
+    if (data === null) {
+        try {
+            const newUser = User.build({
+                user_id: unID(),
+                firstname: req.body.firstname, 
+                lastname: req.body.lastname, 
+                username: req.body.username, 
+                email: req.body.email, 
+                tel: req.body.tel, 
+                priority: req.body.priority, 
+                password: req.body.password,
+                avatar: req.body.avatar
+            });
 
-        //Hash the password and create an user
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(req.body.password, salt);
+            await newUser.save();
 
-        const q = "INSERT INTO users(`firstname`,`lastname`,`username`,`email`,`tel`,`priority`,`password`) VALUES (?)"
-        const values = [
-            req.body.firstname,
-            req.body.lastname,
-            req.body.username,
-            req.body.email,
-            req.body.phone,
-            req.body.priority,
-            hash,
-        ]
-
-        db.query(q, [values], (err, data)=>{
-            if(err) return res.json(err)
-            if(data.length) return res.status(200).json("User has been created")
-        })
-    })
+            return res.status(201).json("User has been created")     
+        } 
+        catch(err) {
+            console.log(err);
+        }
+    } else {
+        if (req.body.priority === "admin") {
+            return res.status(409).json("Admin already existed")
+        } else {
+            return res.status(409).json("User already existed")
+        }
+    }
 }
 
-export const login = (req,res)=>{
-    
+export const login = async (req,res) => {
+    const data = await User.findOne({ where: {
+        username: req.body.username
+    }});
+
+    if (data === null) { return res.status(404).json("User not found!") }
+    else {
+        if (data.password !== req.body.password) {
+            return res.status(400).json("Wrong password!")
+        }
+
+        console.log(data);
+
+        const token = jwt.sign({user_id: data.user_id}, "jwtkey")
+        const {password, ...other} = data
+
+        res.cookie("access_token", token, {
+            httpOnly: true
+        }).status(200).json(other)
+    }
 }
 
-export const logout = (req,res)=>{
+export const logout = (req,res) => {
     
+    res.clearCookie("access_token", {
+        samSite:"none",
+        secure:true
+    }).status(200).json("User has been logged out.")
 }

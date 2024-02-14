@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import axios from 'axios'
@@ -11,10 +11,15 @@ const Register = () => {
         lastname: "",
         username: "",
         email: "",
-        phone: "",
+        tel: "",
         priority: "client",
         password: "",
+        avatar: "",
     })
+
+    const [err, setError] = useState(null)
+
+    const navigate = useNavigate()
 
     const handleChange = e => {
         setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -23,11 +28,11 @@ const Register = () => {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            const res = await axios.post("/auth/register", inputs)
-            console.log(res);
+            await axios.post("/auth/register", inputs)
+            navigate("/login");
         }
         catch(err) {
-            console.log(err)
+            setError(err.response.data);
         }
     }    
 
@@ -45,13 +50,13 @@ const Register = () => {
                 <span className='telnumber-title'>Phone number:</span>
                 <PhoneInput
                     className="telnumber"
-                    name='phone'
+                    name='tel'
                     country={'ru'}
                     value={""}
-                    onChange={number => {setInputs(prev => ({ ...prev, phone: {number} }))}}
+                    onChange={tel => {setInputs(prev => ({ ...prev, tel }))}}
                 />
                 <button className="auth-button mt-1" onClick={handleSubmit}>Register</button>
-                <p className="auth-caution mb-0">This is an error!</p>
+                {err && <p className="auth-caution mb-0">{err}</p>}  
                 <span className='auth-question'>Do you already have account? <Link to="/login" className='auth-link'>Login</Link>                    
                 </span>
             </form>

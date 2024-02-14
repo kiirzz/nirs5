@@ -10,30 +10,20 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import def_ava from '../../img/default_avatar.png'
 import { AuthContext } from '../context/AuthContext'
 
-const Navbar = () => {
+const Navbar_admin = () => {
 
     const { currentUser, logout } = useContext(AuthContext);
 
     return (
         <Navbarbt expand="lg">
             <Container>
-                <Link className="logo" to="/home">
-                    <img className="logo-img" src={Logo} alt="" />
-                </Link>
+                <img className="logo-img" src={Logo} alt="" />
                 <Navbarbt.Toggle aria-controls="basic-navbar-nav" />
                 <Navbarbt.Collapse id="basic-navbar-nav">
-                    <form class="search-form d-flex align-item-center" role="search">
-                        <button class="btn-search" type="submit">
-                            <FontAwesomeIcon icon={icon({name: "magnifying-glass"})} />
-                        </button>
-                        <input class="search-bar" type="search" placeholder="Search" aria-label="Search" />
-                    </form>
+                    <span className="w-50"></span>
                     <Nav className="me-auto">
                         {currentUser ? 
                             <div className="navbar-account"  key={currentUser.dataValues.id}>
-                                <Link to={`/cart/${currentUser.dataValues.id}`} className="navbar-cart-link">
-                                    <FontAwesomeIcon icon={icon({name: "cart-shopping"})} className="navbar-cart"/>
-                                </Link>
                                 <Link to={`/clients/${currentUser.dataValues.id}`} className="navbar-cart-link">
                                     {currentUser.dataValues.avatar === undefined ? 
                                     <img className="user-logo-def-img" src={def_ava} alt="" />
@@ -59,4 +49,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default Navbar_admin
