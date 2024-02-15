@@ -6,7 +6,7 @@ const Admin_Publisher_list = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setData(result.data);
         };
         fetchData();

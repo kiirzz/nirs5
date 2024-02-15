@@ -34,7 +34,7 @@ const Admin_Update_category = () => {
             setUpdateItem(null);
 
             //refetch data
-            const result = await axios('category/');
+            const result = await axios.get('/category/');
             setData(result.data);
         }
         catch(err) {
@@ -44,7 +44,7 @@ const Admin_Update_category = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('category/');
+            const result = await axios.get('/category/');
             setData(result.data);
         };
         fetchData();

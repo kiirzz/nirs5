@@ -21,7 +21,7 @@ const Admin_Add_game = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setPublisherData(result.data);
         };
         fetchData();
@@ -29,7 +29,7 @@ const Admin_Add_game = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('category/');
+            const result = await axios.get('/category/');
             setCategoryData(result.data);
         };
         fetchData();
@@ -46,7 +46,7 @@ const Admin_Add_game = () => {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            await axios.post("game/add_game", inputs)
+            await axios.post("/game/add_game", inputs)
             setError("Game has been created!")
         }
         catch(err) {

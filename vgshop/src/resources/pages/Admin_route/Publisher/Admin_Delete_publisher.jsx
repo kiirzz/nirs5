@@ -21,7 +21,7 @@ const Admin_Delete_publisher = () => {
             setSelectedPublisher(null)
 
             //refetch data
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setData(result.data);
         } 
         catch(err) {
@@ -35,7 +35,7 @@ const Admin_Delete_publisher = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setData(result.data);
         };
         fetchData();

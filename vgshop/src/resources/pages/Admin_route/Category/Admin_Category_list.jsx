@@ -6,7 +6,7 @@ const Admin_Category_list = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('category/');
+            const result = await axios.get('/category/');
             setData(result.data);
         };
         fetchData();

@@ -8,7 +8,7 @@ export const GameProvider = ({ children }) => {
 
     const fetchGames = async () => {
         try {
-            const result = await axios('game/');
+            const result = await axios('/game/');
             setGames(result.data);
         }
         catch (err) {

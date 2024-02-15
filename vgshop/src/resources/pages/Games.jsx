@@ -5,16 +5,17 @@ import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useGame } from '../context/GameContext';
 import { useCart } from '../context/CartContext';
 import axios from "axios";
+import noImg from '../../img/noimg.jpg'
 
 const Games = () => {
 
     const { games, fetchGames } = useGame();
     const { cart, handleCart } = useCart();
-    const { id } = useParams();   
+    const { id } = useParams();
     
     useEffect(() => {
         fetchGames();
-    }, []);
+    }, [])
     
     const [publishers, setPublishers] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -22,7 +23,7 @@ const Games = () => {
     
     useEffect(() => {
         const fetchPublishers = async () => {
-            const result = await axios.get('publisher/');
+            const result = await axios.get('/publisher/');
             setPublishers(result.data);
         };
         fetchPublishers();
@@ -30,7 +31,7 @@ const Games = () => {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const result = await axios.get('category/');
+            const result = await axios.get('/category/');
             setCategories(result.data);
         };
         fetchCategories();
@@ -40,13 +41,9 @@ const Games = () => {
     const category = categories.find(i => i.category_id === game.category_id);
     const reviews = []
 
-    // console.log(game);
-    // console.log(publishers);
-    // console.log(categories);
-
     return (
         <div className="">
-            {!game ?
+            {!game || !publisher || !category ?
                 <div>Loading...</div>
                 : <div className="game" key={game.game_id}>
                 <div className="game-head-link">
@@ -57,7 +54,10 @@ const Games = () => {
                 <div className="game-content">
                     <div className="game-images">
                         <div className="game-image">
-                            <img src={game.image} alt="" className="game-img" />
+                            {(game.image === null)||(game.image === "") ? 
+                                <img src={noImg} alt="" className="game-img" />
+                                : <img src={game.image} alt="" className="game-img" />
+                            }
                         </div>
                     </div>
                     <div className="game-text">

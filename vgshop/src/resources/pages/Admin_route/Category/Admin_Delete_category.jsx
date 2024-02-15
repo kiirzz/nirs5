@@ -21,7 +21,7 @@ const Admin_Delete_category = () => {
             setSelectedCategory(null)
 
             //refetch data
-            const result = await axios('category/');
+            const result = await axios.get('/category/');
             setData(result.data);
         } 
         catch(err) {

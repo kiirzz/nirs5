@@ -36,7 +36,7 @@ const Admin_Update_publisher = () => {
             setUpdateItem(null);
 
             //refetch data
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setData(result.data);
         }
         catch(err) {
@@ -46,7 +46,7 @@ const Admin_Update_publisher = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setData(result.data);
         };
         fetchData();
