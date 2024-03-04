@@ -88,17 +88,16 @@ td {
   background-color: #f2f2f2;
 }
 
-
 /* ------LOGIN & REGISTER----- */
 
 .auth {
   height: 100vh;
-  background-color:aquamarine
+  background-color:var(--main-color)
 }
 
 .auth-title {
   font-size: 30px;
-  color:rgb(128, 55, 55);
+  color: var(--white-color);
   margin-bottom: 20px;  
   font-weight: 700;
 }
@@ -123,9 +122,10 @@ td {
 .auth-button {
   padding: 10px;
   border: none;
-  background-color: var(--button-color);
+  background-color: var(--main-color);
   cursor: pointer;
-  color: white;
+  color: var(--white-color);
+  font-weight: 500;
 }
 
 .auth-caution {
@@ -136,7 +136,7 @@ td {
 
 .auth-link {
   text-decoration: none;
-  color: var(--button-color);
+  color: var(--main-color);
   font-weight: 700;
 }
 
@@ -215,7 +215,7 @@ td {
 
 .navbar-cart-link {
   text-decoration: none;
-  margin: 8px;
+  margin: 8px 12px;
 }
 
 .navbar-cart {
@@ -224,11 +224,14 @@ td {
   font-size: 1.7rem;
 }
 
+.navbar-cart-link-img {
+  margin: 8px 8px 8px 30px;
+}
+
 .user-logo-img,
 .user-logo-def-img {
   height: 40px;
   border-radius: 50%;
-  margin-left: 30px;
 }
 
 .navbar-dropdown {
@@ -270,6 +273,15 @@ td {
 
 .home-title {
   margin-left: 10vh;
+}
+
+.home-no-game-found-box {
+  height: 50vh;
+  margin-left: 40vw;
+}
+
+.home-no-game-found {
+  font-size: 1.5rem;
 }
 
 .home-content {
@@ -439,6 +451,13 @@ td {
   margin-top: 20px;
 }
 
+.home-game-not-available,
+.publisher-game-not-available,
+.category-game-not-available {
+  font-size: 1rem;
+  opacity: 80%;
+}
+
 .home-game-button,
 .publisher-game-button,
 .category-game-button {
@@ -598,6 +617,11 @@ td {
   font-weight: 500;
 }
 
+.game-default-publisher {
+  color: var(--main-color);
+  font-weight: 500;
+}
+
 .game-category .game-text-info-body {
   display: flex;
   flex-wrap: wrap;
@@ -622,11 +646,21 @@ td {
   color: var(--white-color);
 }
 
+.game-default-category {
+  color: var(--white-color);
+  font-weight: 500;
+}
+
 .game-button-box {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 8px;
+}
+
+.game-not-available {
+  font-size: 1.5rem;
+  opacity: 80%;
 }
 
 .game-button {
@@ -673,7 +707,6 @@ td {
   font-weight: 700;
   color: #aaaaaa;
 }
-
 
 /* -------------Cart--------------- */
 
@@ -728,6 +761,11 @@ td {
 
 .cart-element-img {
   margin: 10px 10px 10px 15px;
+  height: 80px;
+  width: 143px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-element-image {
@@ -736,7 +774,7 @@ td {
 }
 
 .cart-element-text {
-  margin: 10px 0 0 10px;
+  margin: 10px 0 0 10px; 
 }
 
 .cart-element-name {
@@ -744,15 +782,25 @@ td {
   font-size: 1.1rem;
   font-weight: 500;
   overflow: hidden;
+  margin-bottom: 30px;
 }
 
-.cart-element-publisher-link {
-  font-size: 0.85rem;
-  margin-bottom: 10px;
+.cart-element-link {
+  text-decoration: none;
+  color: var(--black-color);
+}
+
+.cart-element-link:hover {
+  color: var(--main-color);
 }
 
 .cart-element-delete {
   font-size: 1rem;
+}
+
+.cart-element-delete:hover {
+  color: var(--red-color);
+  cursor: pointer;
 }
 
 .cart-element-price {
@@ -809,13 +857,63 @@ td {
   background-color: var(--main-color);
 }
 
+.cart-paid {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35vh;
+  min-height: 53vh;
+}
+
+.cart-paid-noti {
+  color: var(--parakeet-color);
+  font-size: 2rem;
+  margin: 0;
+}
+
+.cart-paid-button {
+  border: none;
+  background-color: var(--main-color);
+  color: var(--white-color);
+  font-weight: 500;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  width: 100px;
+  border-radius: 10px;
+}
+
 /* -----------Publisher------------- */
 
 .publisher,
-.category {
+.category,
+.categories_list {
   background-color: var(--background-color);
   padding: 50px 30px 30px 50px;
-  min-height: 100vh;
+  min-height: 70vh;
+}
+
+/* ------------Categories_list--------------- */
+
+.categories_list-element-box {
+  margin-top: 30px;
+}
+
+.categories_list-element {
+  margin: 8px 0 4px 24px;
+}
+
+.categories_list-link {
+  text-decoration: none;
+  color: var(--black-color);
+  font-size: 1.3rem;
+}
+
+.categories_list-link:hover {
+  color: var(--main-color);
 }
 
 /* ------home_admin-------- */
@@ -959,4 +1057,128 @@ td {
 .admin-delete-confirmation-button {
   display: inline flex;
   gap: 8px;
+}
+
+/* ----------account----------- */
+
+.account {
+  padding: 30px 0;
+}
+
+.account-title {
+  margin: 0 0 0 10vh;
+}
+
+.account-form-default {
+  margin-left: 10vh;
+}
+
+.account-content {
+  width: 100%;
+  margin-left: 5vh;
+}
+
+/* ----------admin-order----------- */
+
+.admin-order {
+  margin: 70px 50px 50px 15vw;
+  max-width: 400px;
+}
+
+.admin-order-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 35px 0;
+}
+
+.admin-order-element {
+  margin: 8px 0;
+}
+
+.admin-order-element-text {
+  font-size: 1rem;
+  margin-right: 4px;
+}
+
+.head-text {
+  font-weight: 500;
+}
+
+.admin-order-element-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.table-head-order, 
+.table-element-order {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.table-left {
+  text-align: left;
+}
+
+.table-right {
+  text-align: right;
+}
+
+.admin-order-total {
+  font-size: 1.1rem;
+  margin-right: 20px;
+}
+
+.admin-order-button-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-order-button {
+  margin-top: 25px;
+}
+
+.admin-gamelist-span-box {
+  margin: 24px 0 8px 8px;
+}
+
+.admin-gamelist-span {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+
+
+.admin-revenue-title {
+  margin-bottom: 24px;
+}
+
+.admin-revenue-box {
+  margin: 4px 0;
+}
+
+.admin-revenue-info {
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin-right: 8px;
+}
+
+.admin-revenue-chart-box {
+  display: flex;
+}
+
+.admin-revenue-chart-select {
+  margin: 8px 8px 8px 0;
+}
+
+.admin-revenue-chart-element {
+  margin-bottom: 8px;
+}
+
+.admin-account-button-box {
+  margin-left: 50px;
 }

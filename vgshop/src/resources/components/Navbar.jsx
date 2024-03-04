@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import Logo from "../../img/logo.png"
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import Container from 'react-bootstrap/Container';
@@ -9,10 +9,30 @@ import Navbarbt from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import def_ava from '../../img/default_avatar.png'
 import { AuthContext } from '../context/AuthContext'
+import { useGame } from '../context/GameContext'
 
 const Navbar = () => {
-
     const { currentUser, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const { setSearchTerm } = useGame();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate("/login");
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+    }
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+    }
 
     return (
         <Navbarbt expand="lg">
@@ -22,20 +42,23 @@ const Navbar = () => {
                 </Link>
                 <Navbarbt.Toggle aria-controls="basic-navbar-nav" />
                 <Navbarbt.Collapse id="basic-navbar-nav">
-                    <form class="search-form d-flex align-item-center" role="search">
+                    <form class="search-form d-flex align-item-center" role="search" onSubmit={handleSearchSubmit}>
                         <button class="btn-search" type="submit">
                             <FontAwesomeIcon icon={icon({name: "magnifying-glass"})} />
                         </button>
-                        <input class="search-bar" type="search" placeholder="Search" aria-label="Search" />
+                        <input class="search-bar" type="search" placeholder="Search" aria-label="Search" onChange={handleSearch}/>
                     </form>
                     <Nav className="me-auto">
                         {currentUser ? 
                             <div className="navbar-account"  key={currentUser.dataValues.id}>
-                                <Link to={`/cart/${currentUser.dataValues.id}`} className="navbar-cart-link">
+                                <Link to={`/category`} className="navbar-cart-link">
+                                    <FontAwesomeIcon icon={icon({name: "list"})} className="navbar-cart"/>
+                                </Link>
+                                <Link to={`/cart/${currentUser.dataValues.user_id}`} className="navbar-cart-link">
                                     <FontAwesomeIcon icon={icon({name: "cart-shopping"})} className="navbar-cart"/>
                                 </Link>
-                                <Link to={`/clients/${currentUser.dataValues.id}`} className="navbar-cart-link">
-                                    {currentUser.dataValues.avatar === undefined ? 
+                                <Link to={`/clients/${currentUser.dataValues.user_id}`} className="navbar-cart-link navbar-cart-link-img">
+                                    {currentUser.dataValues.avatar === undefined || currentUser.dataValues.avatar === "" ? 
                                     <img className="user-logo-def-img" src={def_ava} alt="" />
                                     :<img className="user-logo-img" src={currentUser.dataValues.avatar} alt="" />}                        
                                 </Link>
@@ -45,8 +68,8 @@ const Navbar = () => {
                                     menuVariant="white"
                                     className="navbar-dropdown"
                                 >
-                                    <NavDropdown.Item href="#action/3.1">Account</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>                            
+                                    <NavDropdown.Item href={`/account/${currentUser.dataValues.user_id}`}>Account</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>                            
                                 </NavDropdown>
                             </div>
                             :<Link to={`/login`} className="navbar-login-dropdown">Login</Link>

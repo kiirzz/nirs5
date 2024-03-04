@@ -15,6 +15,18 @@ export const addPublisher = async (req, res) => {
         return Math.floor(Math.random() * Date.now()).toString(16).slice(-10)
     }
 
+    async function createId() {
+        let newId;
+        let check;
+    
+        do {
+            newId = unID();
+            check = await Publisher.findOne({ where: { publisher_id: newId } });
+        } while (check !== null);
+    
+        return newId;
+    }
+
     //CHECK EXISTING PUBLISHER
     const data = await Publisher.findOne({ where: {
         publisher_name: req.body.name,
@@ -22,8 +34,9 @@ export const addPublisher = async (req, res) => {
 
     if (data === null) {
         try {
+            const publisherId = await createId();
             const newPublisher = Publisher.build({
-                publisher_id: unID(),
+                publisher_id: publisherId,
                 publisher_name: req.body.name,
                 address: req.body.address,
                 tel: req.body.number,

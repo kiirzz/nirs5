@@ -1,43 +1,39 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import {Link, useParams} from 'react-router-dom'
-import { publisher } from '../../data/publisher';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 import { useGame } from '../context/GameContext';
-import { useCart } from '../context/CartContext';
+import { useCart } from "../context/CartContext";
 import axios from "axios";
 import noImg from '../../img/noimg.jpg'
 
 const Publisher = () => {
 
     const { id } = useParams();
-    const [publishers, setPublishers] = useState([]);
     const { games, fetchGames } = useGame();
-    const { cart, handleCart } = useCart();
-
+    const [publisher, setPublisher] = useState();
+    const [pubGames, setPubGames] = useState();
+    const { cart, fetchCartItem, handleCart } = useCart();
+    
     useEffect(() => {
-        const fetchPublishers = async () => {
-            const result = await axios.get('/publisher/');
-            setPublishers(result.data);
+        const fetchPublisher = async () => {
+            // Fetch games
+            await fetchGames();
+            // Fetch cart_item
+            await fetchCartItem();
+            // Fetch publisher
+            const result = await axios.get(`/publisher/`);
+            setPublisher(result.data.find(i => i.publisher_id === id));
         };
-        fetchPublishers();
+
+        fetchPublisher();
     }, []);
 
     useEffect(() => {
-        fetchGames();
-    }, [])
-
-    const [publisher, setPublisher] = useState()
-    const [pubGames,setPubGames] = useState([])
-
-    useEffect(() => {
-        setPublisher(publishers.find(i => i.publisher_id === id))
-        setPubGames(games.filter(i => i.publisher_id === publisher.publisher_id))
-    }, [games, publishers])
-
-    console.log(cart);
-    console.log(publishers);
-    console.log(pubGames);
+        if (publisher && games) {
+            setPubGames(games.filter(i => i.publisher_id === publisher.publisher_id))
+        }        
+    }, [publisher]);
 
     return (
         <div className="">
@@ -47,7 +43,7 @@ const Publisher = () => {
                     <div className="publisher-list" key={publisher.publisher_id}>
                         <div className="publisher-list-header">
                             <span className="publisher-list-title">
-                                <Link to={`/categories/${publisher.publisher_id}`} className="publisher-list-title-link">
+                                <Link to={`/publisher/${publisher.publisher_id}`} className="publisher-list-title-link">
                                     <h2 className="publisher-list-title-name">{publisher.publisher_name}</h2>
                                 </Link>
                             </span>
@@ -73,10 +69,15 @@ const Publisher = () => {
                                             </div> 
                                         </div>                                                                          
                                     </Link>
-                                    <div className="publisher-game-button-box">
-                                        <button className={`home-game-button ${cart.includes(game.game_id) ? "home-game-button-remove" : "home-game-button-add"}`} onClick={() => handleCart(game.game_id)}>{cart.includes(game.game_id) ? "Remove":"Add to Cart"}</button>
-                                        <button className="publisher-game-button">Buy now!</button>
-                                    </div>
+                                    {game.status === 1 ?
+                                        <div className="publisher-game-button-box">
+                                            <button className={`home-game-button ${cart.some(item => item.gameGameId === game.game_id) ? "home-game-button-remove" : "home-game-button-add"}`} onClick={() => handleCart(game.game_id)}>{cart.some(item => item.gameGameId === game.game_id) ? "Remove":"Add to Cart"}</button>
+                                            <button className="publisher-game-button">Buy now!</button>
+                                        </div>
+                                        : <div className="publisher-game-button-box">
+                                            <p className="publisher-game-not-available">Not available</p>
+                                        </div>
+                                    }
                                 </div>
                             ))}
                         </div>

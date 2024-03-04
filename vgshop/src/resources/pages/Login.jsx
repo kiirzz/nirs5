@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import 'react-phone-input-2/lib/style.css'
 import { AuthContext } from '../context/AuthContext'
@@ -11,20 +11,29 @@ const Login = () => {
     })
 
     const [err, setError] = useState(null)
-
     const navigate = useNavigate()
-
-    const { login } = useContext(AuthContext);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { currentUser, login } = useContext(AuthContext);
 
     const handleChange = e => {
         setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
+    useEffect(() => {
+        if (isLoggedIn && currentUser !== null) {
+            if (currentUser.dataValues.priority === "client") {
+                navigate("/home");
+            } else {
+                navigate("/admin");
+            }
+        }
+    }, [currentUser, isLoggedIn]);
+
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            await login(inputs) 
-            navigate("/home");
+            await login(inputs);
+            setIsLoggedIn(true);         
         }
         catch(err) {
             setError(err.response.data);

@@ -13,12 +13,6 @@ export const sequelize = new Sequelize(
     }
 );
 
-sequelize.authenticate().then(() => {
-    console.log('Connection has been established successfully.');
- }).catch((error) => {
-    console.error('Unable to connect to the database: ', error);
- });
-
   // --------------------------User-----------------------------------------
 
 export const User = sequelize.define("users", {
@@ -60,12 +54,6 @@ export const User = sequelize.define("users", {
         allowNull: true
     },
 });
-
-sequelize.sync().then(() => {
-    console.log('User table created successfully!');
- }).catch((error) => {
-    console.error('Unable to create User : ', error);
- });
 
  // --------------------------Game-----------------------------------------
 
@@ -125,12 +113,6 @@ sequelize.sync().then(() => {
     },
 });
 
-sequelize.sync().then(() => {
-    console.log('Game table created successfully!');
- }).catch((error) => {
-    console.error('Unable to create Game : ', error);
- });
-
  // --------------------------Publisher-----------------------------------------
 
  export const Publisher = sequelize.define("publishers", {
@@ -157,12 +139,6 @@ sequelize.sync().then(() => {
     },
 });
 
-sequelize.sync().then(() => {
-    console.log('Publisher table created successfully!');
- }).catch((error) => {
-    console.error('Unable to create Publisher : ', error);
- });
-
  // --------------------------Category-----------------------------------------
 
  export const Category = sequelize.define("categories", {
@@ -177,11 +153,15 @@ sequelize.sync().then(() => {
     },
 });
 
-sequelize.sync().then(() => {
-    console.log('Category table created successfully!');
- }).catch((error) => {
-    console.error('Unable to create Category : ', error);
- });
+// --------------------------Cart-----------------------------------------
+
+export const Cart = sequelize.define("cart", {
+    cart_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        primaryKey: true
+    },
+});
 
  // --------------------------Order-----------------------------------------
 
@@ -213,8 +193,23 @@ sequelize.sync().then(() => {
     },
 });
 
+// --------------------------CartItem-----------------------------------------
+
+export const CartItem = sequelize.define("cart_item", {});
+
+Game.belongsToMany(Cart, { through: CartItem })
+Cart.belongsToMany(Game, { through: CartItem })
+
+// --------------------------OrderGame-----------------------------------------
+
+export const OrderGame = sequelize.define("order_game", {});
+
+Game.belongsToMany(Order, { through: OrderGame });
+Order.belongsToMany(Game, { through: OrderGame });
+
+// Sync models
 sequelize.sync().then(() => {
-    console.log('Order table created successfully!');
+    console.log('Models created successfully!');
  }).catch((error) => {
-    console.error('Unable to create Order : ', error);
+    console.error('Models created failed!', error);
  });

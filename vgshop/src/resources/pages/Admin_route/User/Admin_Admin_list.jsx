@@ -6,7 +6,7 @@ const Admin_Admin_list = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('user/');
+            const result = await axios('/user/');
             setData(result.data.filter(i => i.priority === "admin"));
         };
         fetchData();

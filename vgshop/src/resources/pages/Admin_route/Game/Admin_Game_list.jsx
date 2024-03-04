@@ -12,6 +12,10 @@ const Admin_Game_list = () => {
     return (
         <div className="">
             <h2>Game list</h2>
+            <div className="admin-gamelist-span-box">
+                <span className="admin-gamelist-span">Quantity:</span>
+                <span className="admin-gamelist-span">{games.length}</span>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -19,12 +23,12 @@ const Admin_Game_list = () => {
                         <th className="table-head">publisher</th>
                         <th className="table-head">category</th>
                         <th className="table-head">name</th>
-                        <th className="table-head">description</th>
                         <th className="table-head">price</th>
                         <th className="table-head">status</th>
                         <th className="table-head">sold_quantity</th>
                         <th className="table-head">rating</th>
                         <th className="table-head">released</th>
+                        <th className="table-head">description</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,12 +38,12 @@ const Admin_Game_list = () => {
                             <th>{item.publisher_id}</th>
                             <th>{item.category_id}</th>
                             <th>{item.game_name}</th>
-                            <th>{item.description}</th>
                             <th>{item.price}</th>
                             <th>{item.status}</th>
                             <th>{item.sold_quantity}</th>
                             <th>{item.rating}</th>
                             <th>{item.released}</th>
+                            <th>{item.description}</th>
                         </tr>
                     ))}
                 </tbody>

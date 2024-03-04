@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import Logo from "../../img/logo.png"
-import {Link} from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
+import {Link, useNavigate} from 'react-router-dom'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbarbt from 'react-bootstrap/Navbar';
@@ -13,6 +11,18 @@ import { AuthContext } from '../context/AuthContext'
 const Navbar_admin = () => {
 
     const { currentUser, logout } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate("/login");
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <Navbarbt expand="lg">
@@ -35,8 +45,8 @@ const Navbar_admin = () => {
                                     menuVariant="white"
                                     className="navbar-dropdown"
                                 >
-                                    <NavDropdown.Item href="#action/3.1">Account</NavDropdown.Item>
-                                    <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>                            
+                                    <NavDropdown.Item href={`/admin_account/${currentUser.dataValues.user_id}`}>Account</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>                            
                                 </NavDropdown>
                             </div>
                             :<Link to={`/login`} className="navbar-login-dropdown">Login</Link>

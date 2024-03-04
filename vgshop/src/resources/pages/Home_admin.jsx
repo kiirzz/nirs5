@@ -5,13 +5,14 @@ import Admin_Game_list from './Admin_route/Game/Admin_Game_list';
 import Admin_Add_game from './Admin_route/Game/Admin_Add_game';
 import Admin_Update_game from './Admin_route/Game/Admin_Update_game';
 import Admin_Delete_game from './Admin_route/Game/Admin_Delete_game';
-import Admin_Add_admin from './Admin_route/User/Admin_Add_admin';
+// import Admin_Add_admin from './Admin_route/User/Admin_Add_admin';
 import Admin_Add_user from './Admin_route/User/Admin_Add_user';
 import Admin_Admin_list from './Admin_route/User/Admin_Admin_list';
 import Admin_User_list from './Admin_route/User/Admin_User_list';
-import Admin_Delete_admin from './Admin_route/User/Admin_Delete_admin';
+// import Admin_Delete_admin from './Admin_route/User/Admin_Delete_admin';
 import Admin_Delete_user from './Admin_route/User/Admin_Delete_user';
-import Admin_Update_user from './Admin_route/User/Admin_Update_User'
+import Admin_Update_admin from './Admin_route/User/Admin_Update_admin';
+import Admin_Update_user from './Admin_route/User/Admin_Update_User';
 import Admin_Publisher_list from './Admin_route/Publisher/Admin_Publisher_list';
 import Admin_Add_publisher from './Admin_route/Publisher/Admin_Add_publisher';
 import Admin_Update_publisher from './Admin_route/Publisher/Admin_Update_publisher';
@@ -44,7 +45,7 @@ const Home_admin = () => {
                 </div>
                 <div className={`sub-list ${activeLabel === "Store" ? "active":""}`}>
                     <div className={`admin-menu-element ${activeItem === <Admin_Revenue /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Revenue />)}>
-                        Revenue
+                        Information
                     </div>
                     <div className={`admin-menu-element ${activeItem === <Admin_Orders /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Orders />)}>
                         Orders
@@ -76,12 +77,15 @@ const Home_admin = () => {
                     <div className={`admin-menu-element ${activeItem === <Admin_Admin_list /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Admin_list />)}>
                         Admin list
                     </div>
-                    <div className={`admin-menu-element ${activeItem === <Admin_Add_admin /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Add_admin />)}>
+                    {/* <div className={`admin-menu-element ${activeItem === <Admin_Add_admin /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Add_admin />)}>
                         Add admin
+                    </div> */}
+                    <div className={`admin-menu-element ${activeItem === <Admin_Update_admin /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Update_admin />)}>
+                        Update admin
                     </div>
-                    <div className={`admin-menu-element ${activeItem === <Admin_Delete_admin /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Delete_admin />)}>
+                    {/* <div className={`admin-menu-element ${activeItem === <Admin_Delete_admin /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_Delete_admin />)}>
                         Delete admin
-                    </div>
+                    </div> */}
                     <div className={`admin-menu-element ${activeItem === <Admin_User_list /> ? "element-active":""}`} onClick={() => handleItemClick(<Admin_User_list />)}>
                         User list
                     </div>

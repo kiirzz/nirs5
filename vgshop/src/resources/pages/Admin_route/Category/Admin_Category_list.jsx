@@ -15,6 +15,10 @@ const Admin_Category_list = () => {
     return (
         <div className="">            
             <h2>Category list</h2>
+            <div className="admin-gamelist-span-box">
+                <span className="admin-gamelist-span">Quantity:</span>
+                <span className="admin-gamelist-span">{data.length}</span>
+            </div>
             <table>
                 <thead>
                     <tr>

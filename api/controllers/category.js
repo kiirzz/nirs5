@@ -17,6 +17,18 @@ export const addCategory = async (req, res) => {
         return Math.floor(Math.random() * Date.now()).toString(16).slice(-10)
     }
 
+    async function createId() {
+        let newId;
+        let check;
+    
+        do {
+            newId = unID();
+            check = await Category.findOne({ where: { category_id: newId } });
+        } while (check !== null);
+    
+        return newId;
+    }
+
     //CHECK EXISTING CATEGORY
     const data = await Category.findOne({where: { 
         category_name: req.body.category_name, 
@@ -24,8 +36,9 @@ export const addCategory = async (req, res) => {
 
     if (data === null) {
         try {
+            const categoryId = await createId();
             const newCategory = Category.build({
-                category_id: unID(),
+                category_id: categoryId,
                 category_name: req.body.category_name,
             })
 

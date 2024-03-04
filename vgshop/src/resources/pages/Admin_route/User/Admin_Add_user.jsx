@@ -13,6 +13,7 @@ const Admin_Add_user = () => {
         priority: "client",
         password: "",
         avatar: "",
+        balance: 0,
     })
 
     const [err, setError] = useState(null)

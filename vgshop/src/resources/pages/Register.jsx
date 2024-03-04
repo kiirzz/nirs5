@@ -15,6 +15,7 @@ const Register = () => {
         priority: "client",
         password: "",
         avatar: "",
+        balance: 0,
     })
 
     const [err, setError] = useState(null)

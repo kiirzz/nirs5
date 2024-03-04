@@ -1,21 +1,72 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from '../context/AuthContext';
+import axios from "axios";
 
 const CartContext = createContext();
 
 export const CartProvider = ({children}) => {
     const [cart, setCart] = useState([]);
+    const { currentUser } = useContext(AuthContext);
+    const [paid, setPaid] = useState(false);
 
-    function handleCart(arg) {
-        if (cart.includes(arg)) {
-            var arr = cart.filter((i) => i !== arg)
-            setCart(arr)
-        } else {
-            setCart([...cart, arg]);
+    const fetchCartItem = async () => {
+        const result = await axios.get("/cart/");
+        if (currentUser !== null) {
+            setCart(result.data.filter(i => i.cartCartId === currentUser.dataValues.user_id))
         }
     }
 
+    async function handleCart(params) {
+        let updatedCart;
+        if (currentUser !== null) {
+            const existingItemIndex = cart.findIndex(item => item.gameGameId === params);
+
+            if (existingItemIndex !== -1) {
+                updatedCart = cart.filter(item => item.gameGameId !== params);
+            } else {
+                const newItem = { cartCartId: currentUser.dataValues.user_id, gameGameId: params };
+                updatedCart = [...cart, newItem];
+            }
+
+            try {
+                await axios.post("/cart/update_cart", {id: currentUser.dataValues.user_id, cart: updatedCart});
+                setCart(updatedCart);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    }
+
+    const destroyCart = async () => {
+        try {
+            await axios.post("/cart/destroy_cart", {id: currentUser.dataValues.user_id});
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function handlePay(params) {
+        try {
+            await axios.post("/order/create_order", {id: currentUser.dataValues.user_id, cart: cart, sum: params});
+            destroyCart();
+            setPaid(true);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handlePaid = () => {
+        setPaid(false);
+    }
+
+    useEffect(() => {
+        fetchCartItem();
+    }, [currentUser, paid])
+
     return(
-        <CartContext.Provider value={{ cart, handleCart }}>
+        <CartContext.Provider value={{ cart, paid, fetchCartItem, handleCart, handlePay, handlePaid }}>
             {children}
         </CartContext.Provider>
     );

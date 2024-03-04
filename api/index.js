@@ -5,6 +5,7 @@ import orderRoutes from "./routes/orders.js"
 import userRoutes from "./routes/users.js"
 import publisherRoutes from "./routes/publishers.js"
 import categoryRoutes from "./routes/category.js"
+import cartItemRoutes from "./routes/cart.js"
 import cookieParser from "cookie-parser";
 
 const app = express()
@@ -17,6 +18,7 @@ app.use("/api/order", orderRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/publisher", publisherRoutes)
 app.use("/api/category", categoryRoutes)
+app.use("/api/cart", cartItemRoutes)
 
 app.get("/test",(req,res)=>{
     res.json("Hello world!")

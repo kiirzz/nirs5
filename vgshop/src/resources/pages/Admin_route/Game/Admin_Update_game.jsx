@@ -51,7 +51,7 @@ const Admin_Update_game = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('publisher/');
+            const result = await axios.get('/publisher/');
             setPublisherData(result.data);
         };
         fetchData();
@@ -59,7 +59,7 @@ const Admin_Update_game = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios('category/');
+            const result = await axios.get('/category/');
             setCategoryData(result.data);
         };
         fetchData();
@@ -82,12 +82,12 @@ const Admin_Update_game = () => {
                                 <th className="table-head">publisher</th>
                                 <th className="table-head">category</th>
                                 <th className="table-head">name</th>
-                                <th className="table-head">description</th>
                                 <th className="table-head">price</th>
                                 <th className="table-head">status</th>
                                 <th className="table-head">sold_quantity</th>
                                 <th className="table-head">rating</th>
                                 <th className="table-head">released</th>
+                                <th className="table-head">description</th>
                                 <th className="table-head">update</th>
                             </tr>
                         </thead>
@@ -98,12 +98,12 @@ const Admin_Update_game = () => {
                                     <th>{item.publisher_id}</th>
                                     <th>{item.category_id}</th>
                                     <th>{item.game_name}</th>
-                                    <th>{item.description}</th>
                                     <th>{item.price}</th>
                                     <th>{item.status}</th>
                                     <th>{item.sold_quantity}</th>
                                     <th>{item.rating}</th>
                                     <th>{item.released}</th>
+                                    <th>{item.description}</th>
                                     <th><button onClick={() => handleUpdateItem(item)}></button></th>
                                 </tr>
                             ))}

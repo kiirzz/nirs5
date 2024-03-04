@@ -1,10 +1,22 @@
-import { sequelize, User } from "../db.js"
+import { sequelize, User, Cart } from "../db.js"
 import jwt from "jsonwebtoken";
 
 export const register = async (req,res) => {
 
     function unID() {
         return Math.floor(Math.random() * Date.now()).toString(16).slice(-10)
+    }
+    
+    async function createId() {
+        let newId;
+        let check;
+    
+        do {
+            newId = unID();
+            check = await User.findOne({ where: { user_id: newId } });
+        } while (check !== null);
+    
+        return newId;
     }
 
     //CHECK EXISTING USER
@@ -14,8 +26,9 @@ export const register = async (req,res) => {
 
     if (data === null) {
         try {
+            const userId = await createId();
             const newUser = User.build({
-                user_id: unID(),
+                user_id: userId,
                 firstname: req.body.firstname, 
                 lastname: req.body.lastname, 
                 username: req.body.username, 
@@ -23,10 +36,17 @@ export const register = async (req,res) => {
                 tel: req.body.tel, 
                 priority: req.body.priority, 
                 password: req.body.password,
-                avatar: req.body.avatar
+                avatar: req.body.avatar,
             });
 
             await newUser.save();
+
+            if (newUser.priority === "client") {
+                const newCart = Cart.build({
+                    cart_id: newUser.user_id,
+                })
+                await newCart.save();
+            }
 
             return res.status(201).json("User has been created")     
         } 
@@ -52,8 +72,6 @@ export const login = async (req,res) => {
         if (data.password !== req.body.password) {
             return res.status(400).json("Wrong password!")
         }
-
-        console.log(data);
 
         const token = jwt.sign({user_id: data.user_id}, "jwtkey")
         const {password, ...other} = data

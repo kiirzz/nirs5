@@ -15,6 +15,18 @@ export const addGame = async (req, res) => {
         return Math.floor(Math.random() * Date.now()).toString(16).slice(-10)
     }
 
+    async function createId() {
+        let newId;
+        let check;
+    
+        do {
+            newId = unID();
+            check = await Game.findOne({ where: { game_id: newId } });
+        } while (check !== null);
+    
+        return newId;
+    }
+
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0'); 
     const month = String(today.getMonth() + 1).padStart(2, '0'); 
@@ -28,8 +40,9 @@ export const addGame = async (req, res) => {
 
     if (data === null) {
         try {
+            const gameId = await createId();
             const newGame = Game.build({
-                game_id: unID(),
+                game_id: gameId,
                 game_name: req.body.name,
                 publisher_id: req.body.publisher,
                 category_id: req.body.category,

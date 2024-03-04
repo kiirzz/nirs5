@@ -4,7 +4,8 @@ import {createContext, useContext, useEffect, useState} from "react";
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
-    const [games, setGames] = useState([])
+    const [games, setGames] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchGames = async () => {
         try {
@@ -21,7 +22,7 @@ export const GameProvider = ({ children }) => {
     }, []);
 
     return (
-        <GameContext.Provider value={{ games, fetchGames }}>
+        <GameContext.Provider value={{ games, fetchGames, searchTerm, setSearchTerm }}>
             {children}
         </GameContext.Provider>
     );
